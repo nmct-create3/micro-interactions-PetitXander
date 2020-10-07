@@ -936,6 +936,44 @@ more padding on the right to avoid overlap
     Password toggle custom checkbox
 */
 
+.c-toggle-password__icon{
+    width: 24px;
+    height: 24px;
+    fill: var(--global-color-neutral-dark);
+}
+
+.c-toggle-password__icon--hide{
+    display: none;
+}
+
+.c-password-container{
+    position: relative;
+    display: block;
+}
+
+.c-toggle-password{
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+}
+
+.c-toggle-password__label{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0px 8px;
+}
+
+.c-toggle-password__checkbox:checked + .c-toggle-password__label .c-toggle-password__icon--hide{
+    display: block;
+}
+.c-toggle-password__checkbox:checked + .c-toggle-password__label .c-toggle-password__icon--show{
+    display: none;
+}
+
 /*------------------------------------*\
 #UTILITIES
 \*------------------------------------*/
