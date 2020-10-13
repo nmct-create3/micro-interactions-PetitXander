@@ -71,6 +71,13 @@
     --global-input-focus-borderColor: var(--global-color-alpha);
     --global-input-focus-boxShadowColor: var(--global-color-alpha-x-transparent);
     --global-input-focus-boxShadow: 0 0 0 3px var(--global-input-focus-boxShadowColor);
+    --global-input-error-borderColor: orangered;
+
+    /* TODO */
+    --global-color-error: crimson;
+
+    --global-color-like: #D80027;
+    
 }
 
 /*------------------------------------*\
@@ -606,15 +613,23 @@ input::placeholder {
     Everything form related here
 */
 
+.has-error {
+  --label-color: var(--global-color-error);
+  --input-borderColor: var(--global-input-error-borderColor);
+}
+
+.c-form-field {
+    position: relative;
+}
+
+.c-form-field:focus-within .c-label--floating {
+    transform: translateY(-24px);
+}
+
 .c-form-field--option {
     display: flex;
     align-items: center;
 }
-
-.has-error {
-    --label-color: var(--global-color-error);
-    --input-borderColor: var(--global-input-error-borderColor);
-  }
 
 /*
     Component: Input
@@ -622,7 +637,8 @@ input::placeholder {
     Class to put on all input="text" like form inputs
 */
 
-.c-input {       
+
+.c-input {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -638,6 +654,11 @@ input::placeholder {
     outline: none;
     transition: border var(--global-transition-timing-alpha), box-shadow var(--global-transition-timing-alpha);
 }
+
+.c-input:invalid {
+    box-shadow: unset;
+}
+
 
 .c-input:hover {
     border-color: var(--global-input-hover-borderColor);
@@ -671,12 +692,29 @@ more padding on the right to avoid overlap
 */
 
 .c-label {
-    --label-color: var(--global-color-neutral-xx-dark);
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 0;
     padding-bottom: var(--global-whitespace-sm);
     font-size: 14px;
     line-height: 16px;
     color: var(--label-color, var(--global-color-neutral-xx-dark));
+}
+
+.c-label--floating {
+    position: absolute;
+    top: 20px;
+    left: 8px;
+    padding: 4px 8px;
+    will-change: transform;
+    transform: translateY(0);
+    transition: transform 200ms ease-in-out;
+    box-shadow: 0 0 4px 4px rgba(255,255,255,0.8);
+    background: white;
+}
+
+.is-floating {
+    transform: translateY(-24px);
 }
 
 .c-label--option {
@@ -941,43 +979,98 @@ more padding on the right to avoid overlap
     Password toggle custom checkbox
 */
 
-.c-toggle-password__icon{
-    width: 24px;
-    height: 24px;
-    fill: var(--global-color-neutral-dark);
-}
-
-.c-toggle-password__icon--hide{
-    display: none;
-}
-
-.c-password-container{
+.c-password-toggle-container {
     position: relative;
     display: block;
 }
 
-.c-toggle-password{
-    display: block;
+.c-password-toggle {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-
 }
 
-.c-toggle-password__label{
-    height: 100%;
+
+
+
+.c-password-toggle__label {
     display: flex;
     align-items: center;
-    padding: 0px 8px;
+    padding: 14px 16px;
+
+    cursor: pointer;
 }
 
-.c-toggle-password__checkbox:checked + .c-toggle-password__label .c-toggle-password__icon--hide{
+.c-password-toggle__symbol {
+    display: block;
+    fill: var(--global-color-neutral-x-light);
+    height: 20px;
+    width: 20px;
+}
+
+/* symbol staat sandaard op block */
+.c-password-toggle__symbol--show {
     display: block;
 }
-.c-toggle-password__checkbox:checked + .c-toggle-password__label .c-toggle-password__icon--show{
+
+/* symbol staat sandaard op none */
+.c-password-toggle__symbol--hide {
     display: none;
 }
+
+/* als checkbox:checked, --hide == block */
+.c-password-toggle__checkbox:checked + .c-password-toggle__label .c-password-toggle__symbol--hide {
+    display: block;
+}
+
+/* als checkbox:checked, --show == none */
+.c-password-toggle__checkbox:checked + .c-password-toggle__label .c-password-toggle__symbol--show {
+    display: none;
+}
+
+
+/*
+    Component: Like button
+    ---
+    Custom like button with micro interaction
+*/
+
+.c-like {
+
+}
+
+.c-like__label {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.c-like__symbol {
+    height: 24px;
+    fill: var(--global-color-neutral-x-light);
+    transition: fill 0.15s, transform 0.5s ease-out;
+}
+
+.c-like__fake-input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-like__fake-input:active {
+    transform: scale(0.9);
+    transition: transform 0.1s ease-out;
+}
+
+
+
+.c-like__input:checked + .c-like__label .c-like__symbol {
+    fill: red;
+    transform: rotate(360deg);
+}
+
+
 
 /*------------------------------------*\
 #UTILITIES
@@ -1079,6 +1172,10 @@ more padding on the right to avoid overlap
 
 .u-text-sm {
     font-size: 14px;
+}
+
+.u-text--right {
+    text-align: right;
 }
 
 /*
